@@ -17,7 +17,7 @@ local CurrentAction, CurrentActionMsg
 local CurrentActionData = {}
 local rc = false
 local treating = false
-local vending = false
+local selling = false
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -96,7 +96,7 @@ AddEventHandler('lsd_drug:hasExitedMarker', function()
     elseif CurrentAction == 'vente' then
         ESX.TriggerServerCallback('lsd_drug:outOfMarker', function(cb)
             if cb then
-                vending = false
+                selling = false
             end
         end)
     end
@@ -131,14 +131,14 @@ end)]]
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1)
-        if not vending and CurrentAction == 'vente' then
+        if not selling and CurrentAction == 'vente' then
             ESX.ShowHelpNotification(CurrentActionMsg)
             if IsControlJustReleased(0, Keys['E']) then
                 ESX.TriggerServerCallback('lsd_drug:startVente', function(back)
                     if back then
-                        vending = true
+                        selling = true
                     else
-                        vending = false
+                        selling = false
                     end
                 end)
             end
